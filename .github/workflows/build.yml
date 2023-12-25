@@ -36,15 +36,16 @@ jobs:
       - name: Docker build and push
         run: |
           #run commands to build and push docker images
-          docker build --build-arg TMDB_V3_API_KEY=130c9965d521d5c81c0cba09e12f91c6 -t netflix .
+          docker build --build-arg TMDB_V3_API_KEY=Aj7ay86fe14eca3e76869b92 -t netflix .
           docker tag netflix upendar07/netflix:latest
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push upendar07/netflix:latest  
         env:
           DOCKER_CLI_ACI: 1     
-deploy:    
- needs: build-analyze-scan  
-    runs-on: [Netflix]  
+
+  deploy:    
+    needs: build-analyze-scan  
+    runs-on: [self-hosted]  
     steps:
       - name: Pull the docker image
         run: docker pull upendar07/netflix:latest
@@ -52,4 +53,3 @@ deploy:
         run: trivy image upendar07/netflix:latest
       - name: Run the container netflix
         run: docker run -d --name netflix -p 8081:80 upendar07/netflix:latest
-
