@@ -45,7 +45,7 @@ jobs:
 
   deploy:    
     needs: build-analyze-scan  
-    runs-on: Self-hosted  
+    runs-on: Netflix  
     steps:
       - name: Pull the docker image
         run: docker pull upendar07/netflix:latest
